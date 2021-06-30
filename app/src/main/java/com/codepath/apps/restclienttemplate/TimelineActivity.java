@@ -4,6 +4,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -36,6 +37,7 @@ public class TimelineActivity extends AppCompatActivity {
     List<Tweet> tweets;
     TweetsAdapter adapter;
     Button btnLogout;
+    SwipeRefreshLayout swipeContainer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +58,45 @@ public class TimelineActivity extends AppCompatActivity {
         populateHomeTimeLine();
 
         btnLogout = findViewById(R.id.btnLogout);
+
+        // find the swipe container view
+        swipeContainer = findViewById(R.id.swipeContainer);
+        // set up refresh listener which triggers new data loading
+        swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                fetchTimelineAsync(0);
+            }
+        });
+
+        // Configure the refreshing colors
+        swipeContainer.setColorSchemeResources(R.color.blue);
+    }
+
+    public void fetchTimelineAsync(int page) {
+        // send the network request to fetch the updated data
+        // 'client' here is an instance of Android Async HTTP
+        // getHomeTimeline is an example endpoint
+        client.getHomeTimeline(new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Headers headers, JSON json) {
+                // remember to CLEAR OUT old items before appending in the new ones
+                adapter.clear();
+                // ...the data has come back, add new items to your adapter...
+                try {
+                    adapter.addAll(Tweet.fromJsonArray(json.jsonArray));
+                } catch (JSONException e) {
+                    Log.e(TAG, "Json exception in refresh", e);
+                }
+                // now we call setRefreshing(false) to signal refresh has finished
+                swipeContainer.setRefreshing(false);
+            }
+
+            @Override
+            public void onFailure(int statusCode, Headers headers, String response, Throwable throwable) {
+                Log.e(TAG, "Fetch timeline error: ", throwable);
+            }
+        });
     }
 
     public void onLogoutButton(View view){
