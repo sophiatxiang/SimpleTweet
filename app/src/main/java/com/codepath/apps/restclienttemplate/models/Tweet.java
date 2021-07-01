@@ -31,6 +31,8 @@ public class Tweet {
     public String favorited;
     public String retweeted;
     public String id;
+    public int retweetCount;
+    public int favoriteCount;
 
     // empty constructor needed by the Parceler libary
     public Tweet(){};
@@ -46,6 +48,8 @@ public class Tweet {
         tweet.media_url = getMediaUrl(jsonObject);
         tweet.favorited = jsonObject.getString("favorited");
         tweet.retweeted = jsonObject.getString("retweeted");
+        tweet.retweetCount = jsonObject.getInt("retweet_count");
+        tweet.favoriteCount = jsonObject.getInt("favorite_count");
         return tweet;
     }
 

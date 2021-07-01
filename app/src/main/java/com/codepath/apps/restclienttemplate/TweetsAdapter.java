@@ -18,16 +18,15 @@ import com.bumptech.glide.load.resource.bitmap.CenterCrop;
 import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
+import com.codepath.apps.restclienttemplate.models.CommentActivity;
 import com.codepath.apps.restclienttemplate.models.Tweet;
 import com.codepath.asynchttpclient.callback.JsonHttpResponseHandler;
-import com.google.android.material.textfield.TextInputLayout;
 
 import org.jetbrains.annotations.NotNull;
 import org.parceler.Parcels;
 
 import java.util.List;
 
-import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
 import okhttp3.Headers;
 
 public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder> {
@@ -36,6 +35,8 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
     List<Tweet> tweets;
 
     TwitterClient client;
+
+    public static final int REQUEST_CODE = 30;
 
     public static final String TAG = "TweetsAdapter";
 
@@ -94,6 +95,9 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
         ImageButton ibRetweet;
         ImageButton ibLike;
         TextView tvName;
+        TextView tvReplyCount;
+        TextView tvFavoriteCount;
+        TextView tvRetweetCount;
 
 
         public ViewHolder(@NonNull @NotNull View itemView) {
@@ -107,16 +111,21 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
             ibRetweet = itemView.findViewById(R.id.ibRetweet);
             ibLike = itemView.findViewById(R.id.ibLike);
             tvName = itemView.findViewById(R.id.tvName);
+            tvFavoriteCount = itemView.findViewById(R.id.tvFavoriteCount);
+            tvRetweetCount = itemView.findViewById(R.id.tvRetweetCount);
             itemView.setOnClickListener(this);
         }
 
         public void bind(final Tweet tweet) {
+            //setting all of the views
             RequestOptions imgOptions = new RequestOptions();
             imgOptions = imgOptions.transforms(new CenterCrop(), new RoundedCorners(20));
             tvBody.setText(tweet.body);
             tvScreenName.setText("@" + tweet.user.screenName);
             tvName.setText(tweet.user.name);
             tvDate.setText(tweet.relTimeAgo);
+            tvFavoriteCount.setText("" + tweet.favoriteCount);
+            tvRetweetCount.setText("" + tweet.retweetCount);
             Glide.with(context).load(tweet.user.profileImageUrl).transform(new CircleCrop()).into(ivProfileImage);
             if (tweet.media_url != null) {
                 Glide.with(context).load(tweet.media_url).apply(imgOptions).into(ivMedia);
@@ -130,6 +139,19 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
             if (tweet.retweeted.equals("true")) {
                 ibRetweet.setSelected(true);
             } else ibRetweet.setSelected(false);
+
+
+            //create onclick listener for comment button
+            ibReply.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(context, CommentActivity.class);
+                    intent.putExtra("tweetUser", tweet.user.screenName);
+                    intent.putExtra("tweetId", tweet.id);
+                    context.startActivity(intent);
+                }
+            });
+
 
             //create onclick listener for like button
             ibLike.setOnClickListener(new View.OnClickListener() {
@@ -208,6 +230,8 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
             });
         }
 
+
+        //if the view holder is clicked from the timeline activity, launch tweet details activity
         @Override
         public void onClick(View v) {
             // gets item position
@@ -217,7 +241,7 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
                 // get the tweet at the position, this won't work if the class is static
                 Tweet tweet = tweets.get(position);
                 // create new intent for the new activity
-                Intent intent = new Intent(context, TweetDetails.class);
+                Intent intent = new Intent(context, TweetDetailsActivity.class);
                 // serialize the new tweet using parceler, use its short name as a key
                 intent.putExtra(Tweet.class.getSimpleName(), Parcels.wrap(tweet));
                 // show the activity

@@ -22,9 +22,9 @@ import org.parceler.Parcels;
 
 import okhttp3.Headers;
 
-public class TweetDetails extends AppCompatActivity {
+public class TweetDetailsActivity extends AppCompatActivity {
 
-    public static final String TAG = "TweetDetails";
+    public static final String TAG = "TweetDetailsActivity";
 
     ImageView ivProfileImage;
     TextView tvBody;
@@ -35,6 +35,8 @@ public class TweetDetails extends AppCompatActivity {
     ImageButton ibRetweet;
     ImageButton ibLike;
     TextView tvName;
+    TextView tvFavoriteNum;
+    TextView tvRetweetNum;
 
     Tweet tweet;
 
@@ -50,7 +52,7 @@ public class TweetDetails extends AppCompatActivity {
         client = TwitterApp.getRestClient(this);
 
         tweet = (Tweet) Parcels.unwrap(getIntent().getParcelableExtra(Tweet.class.getSimpleName()));
-        Log.d("TweetDetails", String.format("Showing details for '%s'", tweet.body));
+        Log.d("TweetDetailsActivity", String.format("Showing details for '%s'", tweet.body));
 
         ivProfileImage = findViewById(R.id.ivProfileImage);
         tvBody = findViewById(R.id.tvBody);
@@ -61,6 +63,8 @@ public class TweetDetails extends AppCompatActivity {
         ibRetweet = findViewById(R.id.ibRetweet);
         ibLike = findViewById(R.id.ibLike);
         tvName = findViewById(R.id.tvName);
+        tvFavoriteNum = findViewById(R.id.tvFavoriteNum);
+        tvRetweetNum = findViewById(R.id.tvRetweetNum);
 
         RequestOptions imgOptions = new RequestOptions();
         imgOptions = imgOptions.transforms(new CenterCrop(), new RoundedCorners(20));
@@ -68,6 +72,8 @@ public class TweetDetails extends AppCompatActivity {
         tvScreenName.setText("@" + tweet.user.screenName);
         tvName.setText(tweet.user.name);
         tvDate.setText(tweet.relTimeAgo);
+        tvFavoriteNum.setText("" + tweet.favoriteCount);
+        tvRetweetNum.setText("" + tweet.retweetCount);
         Glide.with(getApplicationContext()).load(tweet.user.profileImageUrl).transform(new CircleCrop()).into(ivProfileImage);
         if (tweet.media_url != null) {
             Glide.with(getApplicationContext()).load(tweet.media_url).apply(imgOptions).into(ivMedia);
@@ -86,6 +92,7 @@ public class TweetDetails extends AppCompatActivity {
     public void clickedLikeBtn(View view) {
         if (tweet.favorited.equals("false")){
             ibLike.setSelected(true);
+            tweet.favorited = "true";
             client.publishLike(tweet.id, new JsonHttpResponseHandler() {
                 @Override
                 public void onSuccess(int statusCode, Headers headers, JSON json) {
@@ -100,6 +107,7 @@ public class TweetDetails extends AppCompatActivity {
         }
         else {
             ibLike.setSelected(false);
+            tweet.favorited = "false";
             client.destroyLike(tweet.id, new JsonHttpResponseHandler() {
                 @Override
                 public void onSuccess(int statusCode, Headers headers, JSON json) {
@@ -116,6 +124,7 @@ public class TweetDetails extends AppCompatActivity {
     public void clickedRetweetBtn(View view) {
         if (tweet.retweeted.equals("false")){
             ibRetweet.setSelected(true);
+            tweet.retweeted = "true";
             client.publishRetweet(tweet.id, new JsonHttpResponseHandler() {
                 @Override
                 public void onSuccess(int statusCode, Headers headers, JSON json) {
@@ -130,6 +139,7 @@ public class TweetDetails extends AppCompatActivity {
         }
         else {
             ibRetweet.setSelected(false);
+            tweet.retweeted = "false";
             client.destroyRetweet(tweet.id, new JsonHttpResponseHandler() {
                 @Override
                 public void onSuccess(int statusCode, Headers headers, JSON json) {

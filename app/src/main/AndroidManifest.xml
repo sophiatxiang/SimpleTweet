@@ -13,7 +13,8 @@
         android:icon="@drawable/ic_vector_logo"
         android:label=""
         android:theme="@style/AppTheme">
-        <activity android:name=".TweetDetails"></activity>
+        <activity android:name=".models.CommentActivity"></activity>
+        <activity android:name=".TweetDetailsActivity" />
         <activity android:name=".ComposeActivity" />
         <activity android:name=".TimelineActivity" />
         <activity

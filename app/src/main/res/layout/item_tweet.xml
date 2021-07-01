@@ -61,9 +61,9 @@
     <ImageButton
         android:id="@+id/ibReply"
         android:layout_width="20dp"
-        android:layout_height="20dp"
+        android:layout_height="25dp"
         android:layout_below="@id/ivMedia"
-        android:layout_marginStart="10dp"
+        android:layout_marginStart="20dp"
         android:layout_marginTop="10dp"
         android:layout_toRightOf="@id/ivProfileImage"
         android:background="@drawable/ic_vector_reply"
@@ -74,9 +74,9 @@
         android:layout_width="20dp"
         android:layout_height="20dp"
         android:layout_below="@id/ivMedia"
-        android:layout_marginStart="110dp"
+        android:layout_marginStart="5dp"
         android:layout_marginTop="10dp"
-        android:layout_toRightOf="@id/ibReply"
+        android:layout_toRightOf="@id/tvRetweetCount"
         android:background="@drawable/retweet_selector" />
 
     <ImageButton
@@ -84,12 +84,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/ivMedia"
-        android:layout_alignParentRight="false"
-        android:layout_marginStart="110dp"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="20dp"
         android:layout_marginTop="10dp"
-        android:layout_toRightOf="@id/ibRetweet"
-        android:background="@drawable/like_selector"
-        />
+        android:background="@drawable/like_selector" />
 
     <TextView
         android:id="@+id/tvName"
@@ -101,4 +99,26 @@
         android:text="Sophia Xiang"
         android:textStyle="bold"
         android:textColor="#000000" />
+
+    <TextView
+        android:id="@+id/tvRetweetCount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/ivMedia"
+        android:layout_marginStart="95dp"
+        android:layout_marginTop="10dp"
+        android:layout_toRightOf="@id/ibReply"
+        android:text="50"
+        android:textColor="@color/medium_gray" />
+
+    <TextView
+        android:id="@+id/tvFavoriteCount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/ivMedia"
+        android:layout_marginEnd="4dp"
+        android:layout_marginTop="10dp"
+        android:layout_toLeftOf="@id/ibLike"
+        android:text="50"
+        android:textColor="@color/medium_gray" />
 </RelativeLayout>

@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ComposeActivity">
+
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/charCount"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/replyUser"
+        android:layout_marginTop="10dp"
+        app:counterEnabled="true"
+        app:counterMaxLength="280"
+        app:counterOverflowTextAppearance="@style/TextAppearance.AppCompat.Small"
+        app:counterTextAppearance="@style/TextAppearance.AppCompat.Small">
+
+        <EditText
+            android:id="@+id/etCompose"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="5dp"
+            android:ems="10"
+            android:gravity="start|top"
+            android:inputType="textMultiLine"
+            android:minLines="5" />
+    </com.google.android.material.textfield.TextInputLayout>
+    <Button
+        android:id="@+id/btnTweet"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/charCount"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="5dp"
+        android:text="@string/tweet" />
+
+    <TextView
+        android:id="@+id/replyUser"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:text="Replying to" />
+
+    <TextView
+        android:id="@+id/tvUsername"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="10dp"
+        android:layout_toEndOf="@+id/replyUser"
+        android:text="sophxng" />
+</RelativeLayout>
