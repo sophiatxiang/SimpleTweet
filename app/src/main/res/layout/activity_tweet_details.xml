@@ -1,10 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
+    tools:context=".TweetDetails"
     android:layout_margin="10dp">
+
+
 
     <ImageView
         android:id="@+id/ivProfileImage"
@@ -19,23 +23,22 @@
         android:id="@+id/tvScreenName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_marginStart="5dp"
-        android:layout_marginTop="0dp"
-        android:layout_toEndOf="@+id/tvName"
+        android:layout_below="@+id/tvName"
+        android:layout_marginStart="10dp"
+        android:layout_toEndOf="@+id/ivProfileImage"
+        android:textSize="15sp"
         tools:text="sophxng" />
 
     <TextView
         android:id="@+id/tvBody"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/tvScreenName"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="2dp"
-        android:layout_toEndOf="@+id/ivProfileImage"
+        android:layout_below="@+id/ivProfileImage"
+        android:layout_marginTop="15dp"
         android:autoLink="all"
         android:linksClickable="true"
         android:textColor="#000000"
+        android:textSize="20sp"
         tools:text="This is my tweet!!!" />
 
     <TextView
@@ -50,12 +53,10 @@
 
     <ImageView
         android:id="@+id/ivMedia"
-        android:layout_width="320dp"
+        android:layout_width="370dp"
         android:layout_height="180dp"
         android:layout_below="@+id/tvBody"
-        android:layout_marginStart="10dp"
-        android:layout_marginEnd="5dp"
-        android:layout_toEndOf="@+id/ivProfileImage"
+        android:layout_marginTop="20dp"
         tools:srcCompat="@tools:sample/avatars" />
 
     <ImageButton
@@ -64,8 +65,9 @@
         android:layout_height="20dp"
         android:layout_below="@id/ivMedia"
         android:layout_marginStart="10dp"
-        android:layout_marginTop="10dp"
-        android:layout_toRightOf="@id/ivProfileImage"
+        android:layout_marginTop="25dp"
+        android:layout_marginEnd="110dp"
+        android:layout_toLeftOf="@id/ibRetweet"
         android:background="@drawable/ic_vector_reply"
         android:tint="@color/medium_gray" />
 
@@ -74,10 +76,10 @@
         android:layout_width="20dp"
         android:layout_height="20dp"
         android:layout_below="@id/ivMedia"
-        android:layout_marginStart="110dp"
-        android:layout_marginTop="10dp"
-        android:layout_toRightOf="@id/ibReply"
-        android:background="@drawable/retweet_selector" />
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="25dp"
+        android:background="@drawable/retweet_selector"
+        android:onClick="clickedRetweetBtn"/>
 
     <ImageButton
         android:id="@+id/ibLike"
@@ -86,10 +88,10 @@
         android:layout_below="@id/ivMedia"
         android:layout_alignParentRight="false"
         android:layout_marginStart="110dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="25dp"
         android:layout_toRightOf="@id/ibRetweet"
         android:background="@drawable/like_selector"
-        />
+        android:onClick="clickedLikeBtn"/>
 
     <TextView
         android:id="@+id/tvName"
@@ -97,8 +99,10 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_marginStart="10dp"
+        android:layout_marginTop="2dp"
         android:layout_toEndOf="@+id/ivProfileImage"
         android:text="Sophia Xiang"
-        android:textStyle="bold"
-        android:textColor="#000000" />
+        android:textColor="#000000"
+        android:textSize="16sp"
+        android:textStyle="bold" />
 </RelativeLayout>

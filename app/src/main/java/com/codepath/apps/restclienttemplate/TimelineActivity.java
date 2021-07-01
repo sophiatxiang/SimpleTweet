@@ -44,6 +44,10 @@ public class TimelineActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_timeline);
 
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setLogo(R.drawable.ic_vector_logo);
+        getSupportActionBar().setDisplayUseLogoEnabled(true);
+
         //create an instance of TwitterClient
         client = TwitterApp.getRestClient(this);
 
@@ -70,7 +74,7 @@ public class TimelineActivity extends AppCompatActivity {
         });
 
         // Configure the refreshing colors
-        swipeContainer.setColorSchemeResources(R.color.blue);
+        swipeContainer.setColorSchemeResources(R.color.twitter_blue);
     }
 
     public void fetchTimelineAsync(int page) {

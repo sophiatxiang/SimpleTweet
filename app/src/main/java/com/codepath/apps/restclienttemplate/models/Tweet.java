@@ -28,18 +28,24 @@ public class Tweet {
     private String rawJsonDate;
     public String relTimeAgo;
     public String media_url;
+    public String favorited;
+    public String retweeted;
+    public String id;
 
     // empty constructor needed by the Parceler libary
     public Tweet(){};
 
     public static Tweet fromJson(JSONObject jsonObject) throws JSONException {
         Tweet tweet = new Tweet();
+        tweet.id = jsonObject.getString("id_str");
         tweet.body = jsonObject.getString("text");
         tweet.createdAt = jsonObject.getString("created_at");
         tweet.user = User.fromJson(jsonObject.getJSONObject("user"));
         tweet.rawJsonDate = jsonObject.getString("created_at");
         tweet.relTimeAgo = tweet.getRelativeTimeAgo(tweet.rawJsonDate);
         tweet.media_url = getMediaUrl(jsonObject);
+        tweet.favorited = jsonObject.getString("favorited");
+        tweet.retweeted = jsonObject.getString("retweeted");
         return tweet;
     }
 
@@ -47,10 +53,6 @@ public class Tweet {
         String mediaUrl = null;
         if (jsonObject.getJSONObject("entities").has("media")){
             mediaUrl = jsonObject.getJSONObject("entities").getJSONArray("media").getJSONObject(0).getString("media_url_https");
-            Log.e("Tweet", mediaUrl);
-        }
-        else {
-            mediaUrl = "";
             Log.e("Tweet", mediaUrl);
         }
         return mediaUrl;
