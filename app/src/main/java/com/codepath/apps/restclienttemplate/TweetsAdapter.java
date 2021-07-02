@@ -164,6 +164,8 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
                     if (tweet.favorited.equals("false")){
                         ibLike.setSelected(true);
                         tweet.favorited = "true";
+                        tweet.favoriteCount++;
+                        tvFavoriteCount.setText("" + tweet.favoriteCount);
                         client.publishLike(tweet.id, new JsonHttpResponseHandler() {
                             @Override
                             public void onSuccess(int statusCode, Headers headers, JSON json) {
@@ -180,6 +182,8 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
                     else {
                         ibLike.setSelected(false);
                         tweet.favorited = "false";
+                        tweet.favoriteCount--;
+                        tvFavoriteCount.setText("" + tweet.favoriteCount);
                         client.destroyLike(tweet.id, new JsonHttpResponseHandler() {
                             @Override
                             public void onSuccess(int statusCode, Headers headers, JSON json) {
@@ -203,6 +207,8 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
                     if (tweet.retweeted.equals("false")){
                         ibRetweet.setSelected(true);
                         tweet.retweeted = "true";
+                        tweet.retweetCount++;
+                        tvRetweetCount.setText("" + tweet.retweetCount);
                         client.publishRetweet(tweet.id, new JsonHttpResponseHandler() {
                             @Override
                             public void onSuccess(int statusCode, Headers headers, JSON json) {
@@ -219,6 +225,8 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
                     else {
                         ibRetweet.setSelected(false);
                         tweet.retweeted = "false";
+                        tweet.retweetCount--;
+                        tvRetweetCount.setText("" + tweet.retweetCount);
                         client.destroyRetweet(tweet.id, new JsonHttpResponseHandler() {
                             @Override
                             public void onSuccess(int statusCode, Headers headers, JSON json) {

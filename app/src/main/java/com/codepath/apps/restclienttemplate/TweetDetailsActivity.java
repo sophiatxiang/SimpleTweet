@@ -93,6 +93,8 @@ public class TweetDetailsActivity extends AppCompatActivity {
         if (tweet.favorited.equals("false")){
             ibLike.setSelected(true);
             tweet.favorited = "true";
+            tweet.favoriteCount++;
+            tvFavoriteNum.setText("" + tweet.favoriteCount);
             client.publishLike(tweet.id, new JsonHttpResponseHandler() {
                 @Override
                 public void onSuccess(int statusCode, Headers headers, JSON json) {
@@ -108,6 +110,8 @@ public class TweetDetailsActivity extends AppCompatActivity {
         else {
             ibLike.setSelected(false);
             tweet.favorited = "false";
+            tweet.favoriteCount--;
+            tvFavoriteNum.setText("" + tweet.favoriteCount);
             client.destroyLike(tweet.id, new JsonHttpResponseHandler() {
                 @Override
                 public void onSuccess(int statusCode, Headers headers, JSON json) {
@@ -125,6 +129,8 @@ public class TweetDetailsActivity extends AppCompatActivity {
         if (tweet.retweeted.equals("false")){
             ibRetweet.setSelected(true);
             tweet.retweeted = "true";
+            tweet.retweetCount++;
+            tvRetweetNum.setText("" + tweet.retweetCount);
             client.publishRetweet(tweet.id, new JsonHttpResponseHandler() {
                 @Override
                 public void onSuccess(int statusCode, Headers headers, JSON json) {
@@ -140,6 +146,8 @@ public class TweetDetailsActivity extends AppCompatActivity {
         else {
             ibRetweet.setSelected(false);
             tweet.retweeted = "false";
+            tweet.retweetCount--;
+            tvRetweetNum.setText("" + tweet.retweetCount);
             client.destroyRetweet(tweet.id, new JsonHttpResponseHandler() {
                 @Override
                 public void onSuccess(int statusCode, Headers headers, JSON json) {
