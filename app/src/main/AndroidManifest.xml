@@ -10,8 +10,8 @@
     <application
         android:name=".TwitterApp"
         android:allowBackup="true"
-        android:icon="@drawable/ic_vector_logo"
-        android:label=""
+        android:icon="@drawable/ic_launcher"
+        android:label=" Twitter"
         android:theme="@style/AppTheme">
         <activity android:name=".models.CommentActivity"></activity>
         <activity android:name=".TweetDetailsActivity" />

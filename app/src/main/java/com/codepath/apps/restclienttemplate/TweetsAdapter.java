@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -95,9 +96,10 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
         ImageButton ibRetweet;
         ImageButton ibLike;
         TextView tvName;
-        TextView tvReplyCount;
         TextView tvFavoriteCount;
         TextView tvRetweetCount;
+        RelativeLayout relativeLayout;
+
 
 
         public ViewHolder(@NonNull @NotNull View itemView) {
@@ -113,7 +115,8 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
             tvName = itemView.findViewById(R.id.tvName);
             tvFavoriteCount = itemView.findViewById(R.id.tvFavoriteCount);
             tvRetweetCount = itemView.findViewById(R.id.tvRetweetCount);
-            itemView.setOnClickListener(this);
+            relativeLayout = itemView.findViewById(R.id.relativeLayout);
+            relativeLayout.setOnClickListener(this);
         }
 
         public void bind(final Tweet tweet) {
@@ -190,6 +193,7 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
                     }
                 }
             });
+
 
             //create onclick listener for retweet button
             ibRetweet.setOnClickListener(new View.OnClickListener() {

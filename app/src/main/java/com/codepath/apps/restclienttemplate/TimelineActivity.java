@@ -32,6 +32,9 @@ public class TimelineActivity extends AppCompatActivity {
     public static final String TAG = "TimelineActivity";
     public final int REQUEST_CODE = 20;
 
+    MenuItem miActionProgressItem;
+    MenuItem compose;
+
     TwitterClient client;
     RecyclerView rvTweets;
     List<Tweet> tweets;
@@ -47,6 +50,7 @@ public class TimelineActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setLogo(R.drawable.ic_vector_logo);
         getSupportActionBar().setDisplayUseLogoEnabled(true);
+
 
         //create an instance of TwitterClient
         client = TwitterApp.getRestClient(this);
@@ -69,6 +73,7 @@ public class TimelineActivity extends AppCompatActivity {
         swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
+                showProgressBar();
                 fetchTimelineAsync(0);
             }
         });
@@ -77,6 +82,8 @@ public class TimelineActivity extends AppCompatActivity {
         swipeContainer.setColorSchemeResources(R.color.twitter_blue);
     }
 
+
+    //refresh home timeline
     public void fetchTimelineAsync(int page) {
         // send the network request to fetch the updated data
         // 'client' here is an instance of Android Async HTTP
@@ -84,14 +91,15 @@ public class TimelineActivity extends AppCompatActivity {
         client.getHomeTimeline(new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Headers headers, JSON json) {
-                // remember to CLEAR OUT old items before appending in the new ones
+                // clear out old item sin the adapter
                 adapter.clear();
-                // ...the data has come back, add new items to your adapter...
+                // add new items into the adapter once the data is retrieved
                 try {
                     adapter.addAll(Tweet.fromJsonArray(json.jsonArray));
                 } catch (JSONException e) {
                     Log.e(TAG, "Json exception in refresh", e);
                 }
+                hideProgressBar();
                 // now we call setRefreshing(false) to signal refresh has finished
                 swipeContainer.setRefreshing(false);
             }
@@ -99,15 +107,20 @@ public class TimelineActivity extends AppCompatActivity {
             @Override
             public void onFailure(int statusCode, Headers headers, String response, Throwable throwable) {
                 Log.e(TAG, "Fetch timeline error: ", throwable);
+                hideProgressBar();
             }
         });
     }
 
+    // log out
     public void onLogoutButton(View view){
         client.clearAccessToken(); // forget who's logged in
         finish(); // navigate backwards to Login screen
     }
 
+
+    // calls client to get home timeline with Twitter API
+    // turn json into tweets and then put into timeline
     private void populateHomeTimeLine() {
         client.getHomeTimeline(new JsonHttpResponseHandler() {
             @Override
@@ -120,6 +133,7 @@ public class TimelineActivity extends AppCompatActivity {
                 } catch (JSONException e) {
                     Log.e(TAG, "Json exception", e);
                 }
+                hideProgressBar();
             }
 
             @Override
@@ -129,6 +143,8 @@ public class TimelineActivity extends AppCompatActivity {
         });
     }
 
+
+    // create menu in action bar
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // inflate the menu; this adds items to the action bar if it is present
@@ -136,6 +152,7 @@ public class TimelineActivity extends AppCompatActivity {
         return true;
     }
 
+    // if "compose" is selected from action bar menu, launch compose tweet activity
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.compose) {
@@ -148,6 +165,8 @@ public class TimelineActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+
+    // after composing/publishing tweet, update timeline with new tweet
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable @org.jetbrains.annotations.Nullable Intent data) {
         if (requestCode == REQUEST_CODE && resultCode == RESULT_OK) {
@@ -161,5 +180,33 @@ public class TimelineActivity extends AppCompatActivity {
             rvTweets.smoothScrollToPosition(0);
         }
         super.onActivityResult(requestCode, resultCode, data);
+    }
+
+
+    // shows progress bar
+    public void showProgressBar() {
+        // Show progress item, hide compose
+        compose.setVisible(false);
+        miActionProgressItem.setVisible(true);
+    }
+
+
+    // hides progress bar
+    public void hideProgressBar() {
+        // Hide progress item, show compose
+        miActionProgressItem.setVisible(false);
+        compose.setVisible(true);
+    }
+
+
+    // get a reference to the menu item (progress bar) and the associated view within the activity:
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        // Store instance of the menu item containing progress
+        miActionProgressItem = menu.findItem(R.id.miActionProgress);
+        compose = menu.findItem(R.id.compose);
+
+        // Return to finish
+        return super.onPrepareOptionsMenu(menu);
     }
 }
